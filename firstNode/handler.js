@@ -43,7 +43,26 @@ list.forEach(element => {
 });
 
 return listaGerada;
+}
 
+var creatlistcompra  = (list) => {
+    let listCompra = '';
+
+    let layot2 = `<tr>
+    <td>{$Data}</td>
+    <td>{$Valor}</td>
+    <td>{$quantidade}</td>
+    <td>{$Codigo da Acao}</td>
+      
+  </tr>`;
+  list.forEach(element => {
+    listCompra += layot2.replace("{$Data}", element.data)
+    .replace("{$Valor" , element.valordecompra)
+    .replace("{$quantidade" , element.quant)
+    .replace("{$Codigo da Acao" , element.codcompra)
+    
+  });
+  return listCompra;
 }
 module.exports = (request, response) => {
     if (request.method === 'GET') {
@@ -60,7 +79,9 @@ module.exports = (request, response) => {
                 break;
                 case '/compra':
                     response.writeHead(200, {'Content-Type': 'text/html'});
-                    response.end(readFile("compra.html").replace("@$listcompra@", list.length));
+                    response.end(readFile("compra.html").replace("@$listindex@" , creatlista(list))
+                    .replace("@$listcompra@" , creatlistcompra(list)));
+                                               
                 break;
             default:
                 break;
@@ -84,13 +105,14 @@ module.exports = (request, response) => {
                      //{
                         //list[i].replace("{$fname}" , fname);
                     // }
-
+                   
+            
                     
                 });  
+               
                 response.end(readFile("index.html").replace("@$list@", list.length)
                 .replace("@$listindex@" , creatlista(list)));  
                 break;
-
                 response.end(readFile("compra.html").replace("@$list@", list.length)
                 .replace("@$listindex@" , creatlista(list)));  
                 break;
